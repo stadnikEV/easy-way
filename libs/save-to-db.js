@@ -1,8 +1,9 @@
-const mongoose = require('../libs/mongoose');
+const mongoose = require('./mongoose');
 const saveAll = require('./mongoose-save-all');
 const createCompanyField = require('./create-company-field');
 const getPhones = require('./get-phones');
 const getName = require('./get-name');
+const slicePhones = require('./slice-phones');
 
 module.exports = (data) => {
   const promise = new Promise((resolve, reject) => {
@@ -20,6 +21,7 @@ module.exports = (data) => {
       const firstName = name.firstName;
       const lastName = name.lastName;
       const fatherName = name.fatherName;
+      const phone = getPhones(row.phone);
 
       const origin = new Origin({
         _id: new mongoose.Types.ObjectId(),
@@ -33,7 +35,7 @@ module.exports = (data) => {
         fatherName,
         service: row.service,
         email: row.email.join(' '),
-        phone: row.phone,
+        phone: slicePhones({ phone }),
       });
 
       const company = new Company({
@@ -45,7 +47,7 @@ module.exports = (data) => {
         lastName: lastName.toLowerCase(),
         fatherName: fatherName.toLowerCase(),
         email: row.email,
-        phone: getPhones(row.phone),
+        phone,
       });
 
       documents.push(company);
