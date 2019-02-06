@@ -15,12 +15,15 @@ const saveOriginToCompanyDuplicateByIds = require('./libs/save-origin-to-company
 const dropDatabase = require('./libs/drop-database');
 const removeDirectory = require('./libs/remove-directory');
 const createDirectory = require('./libs/create-directory');
+const checkValidPhones = require('./libs/check-valid-phones');
+
 
 const app = express();
 app.set('port', 8080);
 console.log('\033[2J');
 
 let numberOrigin = 0;
+let ban = null;
 
 dropDatabase()
   .then(() => {
@@ -28,6 +31,19 @@ dropDatabase()
   })
   .then(() => {
     return createDirectory({ path: './excel/result' });
+  })
+  .then(() => {
+    return XlsxToJsonFile({
+      input: 'excel/ban.xlsx',
+      output: 'excel/ban.json',
+    })
+  })
+  .then(() => {
+    return jsonFileToObject({ path: 'excel/ban.json' });
+  })
+  .then((data) => {
+    ban = data;
+    return checkValidPhones({data, fileName: 'Ban'});
   })
   .then(() => {
     console.log('Чтение XLSX');
@@ -38,6 +54,9 @@ dropDatabase()
   })
   .then(() => {
     return jsonFileToObject({ path: 'excel/origin.json' });
+  })
+  .then((data) => {
+    return checkValidPhones({data, fileName: 'Origin'});
   })
   .then((data) => {
     numberOrigin = data.length;
@@ -56,17 +75,17 @@ dropDatabase()
   .then((ids) => {
     return saveOriginToCompanyDuplicateByIds({ ids });
   })
+  // .then(() => {
+  //   return XlsxToJsonFile({
+  //     input: 'excel/ban.xlsx',
+  //     output: 'excel/ban.json',
+  //   })
+  // })
+  // .then(() => {
+  //   return jsonFileToObject({ path: 'excel/ban.json' });
+  // })
   .then(() => {
-    return XlsxToJsonFile({
-      input: 'excel/ban.xlsx',
-      output: 'excel/ban.json',
-    })
-  })
-  .then(() => {
-    return jsonFileToObject({ path: 'excel/ban.json' });
-  })
-  .then((data) => {
-    return removeBanDuplicates(data);
+    return removeBanDuplicates(ban);
   })
   .then((ids) => {
     return saveOriginToBanByIds({ ids });

@@ -43,15 +43,19 @@ module.exports = (phones) => {
 
   const checkPhone = ({ phone, format }) => {
     if (format === 11) {
-      if (!checkCountry({ number: phone.slice(0, 1) })) {
-        return false;
+      const firstNumber = phone.slice(0, 1);
+      if (firstNumber === '8') {
+        phone = 7 + phone.slice(1);
       }
-      phone = phone.slice(1);
+      // if (!checkCountry({ number: phone.slice(0, 1) })) {
+      //   return false;
+      // }
+      // phone = phone.slice(1);
     }
 
-    if (!checkOperator({ number: phone.slice(0, 3) })) {
-      return false;
-    }
+    // if (!checkOperator({ number: phone.slice(0, 3) })) {
+    //   return false;
+    // }
 
     return true;
   }
@@ -64,9 +68,17 @@ module.exports = (phones) => {
     const numberOfPhones = numbers.length / format;
 
     for (let i = 0; i < numberOfPhones; i += 1) {
-      const phone = numbers.slice(i * format, format + (i * format));
-      if (!checkPhone({ phone, format })) {
-        return false;
+      let phone = numbers.slice(i * format, format + (i * format));
+      // if (!checkPhone({ phone, format })) {
+      //   return false;
+      //   // continue;
+      // }
+
+      if (format === 11) {
+        const firstNumber = phone.slice(0, 1);
+        if (firstNumber === '8') {
+          phone = 7 + phone.slice(1);
+        }
       }
       result.push(phone);
     }
@@ -84,13 +96,13 @@ module.exports = (phones) => {
   const format = getFormat(numbers);
 
   if (!format) {
-    return [];
+    return null;
   }
 
   const phone = getPhones({ numbers, format });
 
   if (!phone) {
-    return [];
+    return null;
   }
 
   return phone;
