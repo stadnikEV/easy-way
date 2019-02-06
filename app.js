@@ -7,11 +7,13 @@ const saveToDB = require('./libs/save-to-db');
 const removeEmptyEmail = require('./libs/remove-empty-email');
 const removeEmptyName = require('./libs/remove-empty-name');
 const removeCompanyDuplicates = require('./libs/remove-company-duplicates');
+const removeInstitutions = require('./libs/remove-institutions');
 const removeBanDuplicates = require('./libs/remove-ban-duplicates');
 const getResult = require('./libs/get-result');
 const addId = require('./libs/add-id');
 const saveOriginToBanByIds = require('./libs/save-origin-to-ban-by-ids');
 const saveOriginToCompanyDuplicateByIds = require('./libs/save-origin-to-company-duplicate-by-ids');
+const saveOriginToInstitutionsByIds = require('./libs/save-origin-to-institutions-by-ids');
 const dropDatabase = require('./libs/drop-database');
 const removeDirectory = require('./libs/remove-directory');
 const createDirectory = require('./libs/create-directory');
@@ -33,6 +35,7 @@ dropDatabase()
     return createDirectory({ path: './excel/result' });
   })
   .then(() => {
+    console.log('Чтение XLSX');
     return XlsxToJsonFile({
       input: 'excel/ban.xlsx',
       output: 'excel/ban.json',
@@ -46,7 +49,6 @@ dropDatabase()
     return checkValidPhones({data, fileName: 'Ban'});
   })
   .then(() => {
-    console.log('Чтение XLSX');
     return XlsxToJsonFile({
       input: 'excel/origin.xlsx',
       output: 'excel/origin.json',
@@ -70,20 +72,17 @@ dropDatabase()
     return saveToDB(data);
   })
   .then(() => {
+    return removeInstitutions();
+  })
+  .then((ids) => {
+    return saveOriginToInstitutionsByIds({ ids })
+  })
+  .then(() => {
     return removeCompanyDuplicates();
   })
   .then((ids) => {
     return saveOriginToCompanyDuplicateByIds({ ids });
   })
-  // .then(() => {
-  //   return XlsxToJsonFile({
-  //     input: 'excel/ban.xlsx',
-  //     output: 'excel/ban.json',
-  //   })
-  // })
-  // .then(() => {
-  //   return jsonFileToObject({ path: 'excel/ban.json' });
-  // })
   .then(() => {
     return removeBanDuplicates(ban);
   })
@@ -98,6 +97,9 @@ dropDatabase()
   })
   .then(() => {
     return removeDirectory({ path: './excel/ban.json' });
+  })
+  .then(() => {
+    return removeDirectory({ path: './excel/ignore-words.json' });
   })
   .then(() => {
     mongoose.disconnect();

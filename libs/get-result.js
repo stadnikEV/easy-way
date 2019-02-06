@@ -14,17 +14,19 @@ module.exports = ({ numberOrigin }) => {
     const EmptyEmail = require('../models/empty-email');
     const CompanyDuplicate = require('../models/company-duplicate');
     const EmptyName = require('../models/empty-name');
+    const Institutions = require('../models/institutions');
 
     const bar = new _cliProgress.Bar({
       format: `Получение результата [{bar}]`
     }, _cliProgress.Presets.shades_classic);
-    const barTotal = 14;
+    const barTotal = 15;
     bar.start(barTotal, 0);
 
     let numberEmptyEmail = 0;
     let numberEmptyFio = 0;
     let numberDuplicateCompany = 0;
     let numberBan = 0;
+    let numberInstitutions = 0;
     let numberResult = 0;
 
     getCollectionsId(Company)
@@ -281,7 +283,7 @@ module.exports = ({ numberOrigin }) => {
         ]);
       })
       .then((emptyName) => {
-        bar.update(13);
+        bar.update(12);
         if (emptyName.length === 0) {
           return;
         }
@@ -305,11 +307,52 @@ module.exports = ({ numberOrigin }) => {
         })
       })
       .then(() => {
+        bar.update(13);
+        return Institutions
+        .aggregate([
+          {
+            $project: {
+              _id: 0,
+              "id": "$id",
+              "Компания": "$companyName",
+              "ИНН": "$inn",
+              "Адрес": "$address",
+              "ФИО": "$fio",
+              "Отрасль" : "$service",
+              "Почта": "$email",
+              "Телефоны": "$phone",
+            },
+          }
+        ]);
+      })
+      .then((institutions) => {
         bar.update(14);
+        if (Institutions.length === 0) {
+          return;
+        }
+        numberInstitutions = institutions.length;
+        return saveToXlsx({
+          fields: [
+            "id",
+            'Компания',
+            'ИНН',
+            'Адрес',
+            'ФИО',
+            'Отрасль',
+            'Почта',
+            'Телефоны',
+          ],
+          data: institutions,
+          path: 'excel/result/Учреждения.xlsx',
+        })
+      })
+      .then(() => {
+        bar.update(15);
         const data = [{
           "Начальное количество": `${numberOrigin} (100%)`,
           "Пустые email": `${numberEmptyEmail} (${getProcent({ full: numberOrigin, part: numberEmptyEmail })}%)`,
           "Пустые ФИО": `${numberEmptyFio} (${getProcent({ full: numberOrigin, part: numberEmptyFio })}%)`,
+          "Учреждения": `${numberInstitutions} (${getProcent({ full: numberOrigin, part: numberInstitutions })}%)`,
           "Дубликаты": `${numberDuplicateCompany} (${getProcent({ full: numberOrigin, part: numberDuplicateCompany })}%)`,
           "Бан": `${numberBan} (${getProcent({ full: numberOrigin, part: numberBan })}%)`,
           "Результат": `${numberResult} (${getProcent({ full: numberOrigin, part: numberResult })}%)`,
@@ -320,6 +363,7 @@ module.exports = ({ numberOrigin }) => {
             "Начальное количество",
             'Пустые email',
             'Пустые ФИО',
+            "Учреждения",
             'Дубликаты',
             'Бан',
             "Результат",
@@ -334,6 +378,7 @@ module.exports = ({ numberOrigin }) => {
         console.log(`Начальное количество: ${numberOrigin} (100%)`);
         console.log(`Пустые email:         ${numberEmptyEmail} (${getProcent({ full: numberOrigin, part: numberEmptyEmail })}%)`);
         console.log(`Пустые ФИО:           ${numberEmptyFio} (${getProcent({ full: numberOrigin, part: numberEmptyFio })}%)`);
+        console.log(`Учреждения:           ${numberInstitutions} (${getProcent({ full: numberOrigin, part: numberInstitutions })}%)`);
         console.log(`Дубликаты:            ${numberDuplicateCompany} (${getProcent({ full: numberOrigin, part: numberDuplicateCompany })}%)`);
         console.log(`Бан:                  ${numberBan} (${getProcent({ full: numberOrigin, part: numberBan })}%)`);
         console.log(`Резултат:             ${numberResult} (${getProcent({ full: numberOrigin, part: numberResult })}%)`);
