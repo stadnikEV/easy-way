@@ -4,7 +4,7 @@ const findInstitutions = require('./find-institutions');
 
 module.exports = () => {
   const promise = new Promise((resolve, reject) => {
-    let resultIds = null;
+    let resultIds = [];
     const Company = require('../models/company');
 
     findInstitutions()
