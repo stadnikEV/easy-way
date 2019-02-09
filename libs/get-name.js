@@ -1,14 +1,18 @@
-const getWords = require('./get-words');
+const getWordsName = require('./get-words-name');
 
 module.exports = ({ fio, firstName, lastName, fatherName }) => {
-  if (getWords({ string: firstName })[0]
-  && getWords({ string: lastName })[0]
-  && getWords({ string: fatherName })[0]
+  if (getWordsName({ string: firstName }).length === 1
+  && getWordsName({ string: lastName }).length === 1
+  && getWordsName({ string: fatherName }).length === 1
   ) {
-    return {firstName, lastName, fatherName};
+    return {
+      firstName: getWordsName({ string: firstName })[0],
+      lastName: getWordsName({ string: lastName })[0],
+      fatherName: getWordsName({ string: fatherName })[0],
+    };
   }
 
-  fio = getWords({ string: fio });
+  fio = getWordsName({ string: fio });
   if (fio.length !== 3) {
     return null;
   }

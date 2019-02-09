@@ -3,11 +3,16 @@ module.exports = (id) => {
   const promise = new Promise((resolve, reject) => {
     const Company = require('../models/company');
 
-    Company.findOne({ id }, ['companyName', 'lastName', 'firstName', 'fatherName', 'phone', 'email', '-_id'])
+    Company.findOne({ id }, ['companyName', 'inn', 'lastName', 'firstName', 'fatherName', 'phone', 'email', '-_id'])
       .then((document) => {
+
         return Company.find({ $or: [
           {
             phone: { $in: document.phone },
+            id: { $ne: id },
+          },
+          {
+            inn: { $in: document.inn },
             id: { $ne: id },
           },
           {

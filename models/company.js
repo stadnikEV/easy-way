@@ -20,6 +20,9 @@ const schema = new Schema({
   email: [
     String,
   ],
+  inn: [
+    String,
+  ],
   group: Number,
   phone: [
     String,

@@ -3,6 +3,7 @@ const saveAll = require('./mongoose-save-all');
 const createCompanyField = require('./create-company-field');
 const getPhones = require('./get-phones');
 const getName = require('./get-name');
+const getNumber = require('./get-number');
 const slicePhones = require('./slice-phones');
 
 module.exports = (data) => {
@@ -46,6 +47,7 @@ module.exports = (data) => {
         firstName: firstName.toLowerCase(),
         lastName: lastName.toLowerCase(),
         fatherName: fatherName.toLowerCase(),
+        inn: getNumber({ string: row.inn }),
         email: row.email,
         phone,
       });

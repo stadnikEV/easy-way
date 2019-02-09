@@ -90,6 +90,7 @@ module.exports = ({ numberOrigin }) => {
             $project: {
               _id: 0,
               "id": "$id",
+              "inn": "$inn",
               "Компания": "$companyName",
               "Адрес": "$address",
               "ФИО": "$fio",
@@ -114,6 +115,7 @@ module.exports = ({ numberOrigin }) => {
         return saveToXlsx({
           fields: [
             "id",
+            'inn',
             'Компания',
             'Адрес',
             'ФИО',
@@ -132,6 +134,7 @@ module.exports = ({ numberOrigin }) => {
             $project: {
               _id: 0,
               "id": "$id",
+              "inn": "$inn",
               "Компания": "$companyName",
               "Адрес": "$address",
               "ФИО": "$fio",
@@ -156,6 +159,7 @@ module.exports = ({ numberOrigin }) => {
         return saveToXlsx({
           fields: [
             'id',
+            'inn',
             'Компания',
             'Адрес',
             'ФИО',
@@ -303,7 +307,7 @@ module.exports = ({ numberOrigin }) => {
             'Телефоны',
           ],
           data: emptyName,
-          path: 'excel/result/Пустые_ФИО.xlsx',
+          path: 'excel/result/Не_корректные_ФИО.xlsx',
         })
       })
       .then(() => {
@@ -351,7 +355,7 @@ module.exports = ({ numberOrigin }) => {
         const data = [{
           "Начальное количество": `${numberOrigin} (100%)`,
           "Пустые email": `${numberEmptyEmail} (${getProcent({ full: numberOrigin, part: numberEmptyEmail })}%)`,
-          "Пустые ФИО": `${numberEmptyFio} (${getProcent({ full: numberOrigin, part: numberEmptyFio })}%)`,
+          "Не корректные ФИО": `${numberEmptyFio} (${getProcent({ full: numberOrigin, part: numberEmptyFio })}%)`,
           "Учреждения": `${numberInstitutions} (${getProcent({ full: numberOrigin, part: numberInstitutions })}%)`,
           "Дубликаты": `${numberDuplicateCompany} (${getProcent({ full: numberOrigin, part: numberDuplicateCompany })}%)`,
           "Бан": `${numberBan} (${getProcent({ full: numberOrigin, part: numberBan })}%)`,
@@ -362,7 +366,7 @@ module.exports = ({ numberOrigin }) => {
           fields: [
             "Начальное количество",
             'Пустые email',
-            'Пустые ФИО',
+            'Не корректные ФИО',
             "Учреждения",
             'Дубликаты',
             'Бан',
@@ -377,7 +381,7 @@ module.exports = ({ numberOrigin }) => {
         console.log('\033[2J');
         console.log(`Начальное количество: ${numberOrigin} (100%)`);
         console.log(`Пустые email:         ${numberEmptyEmail} (${getProcent({ full: numberOrigin, part: numberEmptyEmail })}%)`);
-        console.log(`Пустые ФИО:           ${numberEmptyFio} (${getProcent({ full: numberOrigin, part: numberEmptyFio })}%)`);
+        console.log(`Не корректные ФИО:    ${numberEmptyFio} (${getProcent({ full: numberOrigin, part: numberEmptyFio })}%)`);
         console.log(`Учреждения:           ${numberInstitutions} (${getProcent({ full: numberOrigin, part: numberInstitutions })}%)`);
         console.log(`Дубликаты:            ${numberDuplicateCompany} (${getProcent({ full: numberOrigin, part: numberDuplicateCompany })}%)`);
         console.log(`Бан:                  ${numberBan} (${getProcent({ full: numberOrigin, part: numberBan })}%)`);

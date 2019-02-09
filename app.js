@@ -60,6 +60,11 @@ dropDatabase()
   .then((data) => {
     return checkValidPhones({data, fileName: 'Origin'});
   })
+  // .then((data) => {
+  //   const show = require('./libs/show');
+  //   data = addId(data);
+  //   show(data);
+  // })
   .then((data) => {
     numberOrigin = data.length;
     data = addId(data);
