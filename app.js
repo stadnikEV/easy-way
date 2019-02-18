@@ -18,6 +18,7 @@ const dropDatabase = require('./libs/drop-database');
 const removeDirectory = require('./libs/remove-directory');
 const createDirectory = require('./libs/create-directory');
 const checkValidPhones = require('./libs/check-valid-phones');
+const setStartPosition = require('./libs/set-start-position');
 
 
 const app = express();
@@ -26,6 +27,7 @@ console.log('\033[2J');
 
 let numberOrigin = 0;
 let ban = null;
+let startPosition = 0;
 
 dropDatabase()
   .then(() => {
@@ -35,6 +37,10 @@ dropDatabase()
     return createDirectory({ path: './excel/result' });
   })
   .then(() => {
+    return setStartPosition();
+  })
+  .then((position) => {
+    startPosition = position;
     console.log('Чтение XLSX');
     return XlsxToJsonFile({
       input: 'excel/ban.xlsx',
@@ -55,7 +61,7 @@ dropDatabase()
     });
   })
   .then(() => {
-    return jsonFileToObject({ path: 'excel/origin.json' });
+    return jsonFileToObject({ path: 'excel/origin.json', startPosition });
   })
   .then((data) => {
     return checkValidPhones({data, fileName: 'Origin'});
@@ -66,6 +72,7 @@ dropDatabase()
   //   show(data);
   // })
   .then((data) => {
+    console.log(data);
     numberOrigin = data.length;
     data = addId(data);
     return removeEmptyEmail(data);
