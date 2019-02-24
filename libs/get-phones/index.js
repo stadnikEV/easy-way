@@ -1,4 +1,4 @@
-const codeOperator = require('./code-operator');
+// const codeOperator = require('./code-operator');
 
 module.exports = (phones) => {
 
@@ -15,50 +15,59 @@ module.exports = (phones) => {
       return 10;
     }
     if (numbers.length % 11 === 0) {
+      if (numbers.length === 22) {
+        const numberOfseparators = phones.match(/[,;\n]/g);
+        if (!numberOfseparators || numberOfseparators.length !== 1) {
+          return null;
+        }
+      }
       return 11;
+    }
+    if (numbers.length < 30 && numbers.length % 6 === 0) {
+      return 6;
     }
     return null;
   }
 
-  const checkCountry = ({ number }) => {
-    if (number === '7' || number === '8') {
-      return true;
-    }
+  // const checkCountry = ({ number }) => {
+  //   if (number === '7' || number === '8') {
+  //     return true;
+  //   }
+  //
+  //   return false;
+  // }
+  //
+  // const checkOperator = ({ number }) => {
+  //   if (number.length !== 3) {
+  //     return false;
+  //   }
+  //
+  //   if (codeOperator.indexOf(number) === -1) {
+  //     return false;
+  //   }
+  //
+  //   return true;
+  // }
 
-    return false;
-  }
 
-  const checkOperator = ({ number }) => {
-    if (number.length !== 3) {
-      return false;
-    }
-
-    if (codeOperator.indexOf(number) === -1) {
-      return false;
-    }
-
-    return true;
-  }
-
-
-  const checkPhone = ({ phone, format }) => {
-    if (format === 11) {
-      const firstNumber = phone.slice(0, 1);
-      if (firstNumber === '8') {
-        phone = 7 + phone.slice(1);
-      }
+  // const checkPhone = ({ phone, format }) => {
+  //   if (format === 11) {
+  //     const firstNumber = phone.slice(0, 1);
+  //     if (firstNumber === '8') {
+  //       phone = 7 + phone.slice(1);
+  //     }
       // if (!checkCountry({ number: phone.slice(0, 1) })) {
       //   return false;
       // }
       // phone = phone.slice(1);
-    }
+    // }
 
     // if (!checkOperator({ number: phone.slice(0, 3) })) {
     //   return false;
     // }
 
-    return true;
-  }
+  //   return true;
+  // }
 
 
 
