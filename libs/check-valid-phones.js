@@ -9,7 +9,7 @@ module.exports = ({ data, fileName }) => {
         return;
       }
 
-      if (getPhones(company.phone)) {
+      if (getPhones({ phones: company.phone, truePhone: company.truePhone })) {
         return
       }
       company.id = index + 2;

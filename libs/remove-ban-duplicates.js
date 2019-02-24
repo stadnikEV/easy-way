@@ -28,7 +28,7 @@ module.exports = (dataBan) => {
       ban.corporateEmail = getCorporateEmail({ corporateEmail: ban.corporateEmail });
       ban.fio = ban.fio.toLowerCase();
       ban.fio = getWords({ string: ban.fio });
-      ban.phone = getPhones(ban.phone);
+      ban.phone = getPhones({ phones: ban.phone, truePhone: ban.truePhone });
       ban.inn = getNumber({ string: ban.inn });
 
       findBanDuplicates(ban)

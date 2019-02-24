@@ -1,6 +1,6 @@
-// const codeOperator = require('./code-operator');
+const codeOperator = require('./code-operator');
 
-module.exports = (phones) => {
+module.exports = ({ phones, truePhone }) => {
 
   const getNumbers = (phones) => {
     const numbers = phones.match(/[0-9]/g);
@@ -15,73 +15,63 @@ module.exports = (phones) => {
       return 10;
     }
     if (numbers.length % 11 === 0) {
-      if (numbers.length === 22) {
-        const numberOfseparators = phones.match(/[,;\n]/g);
-        if (!numberOfseparators || numberOfseparators.length !== 1) {
-          return null;
-        }
-      }
       return 11;
     }
-    if (numbers.length < 30 && numbers.length % 6 === 0) {
+    if (numbers.length < 19 && numbers.length % 6 === 0) {
       return 6;
     }
+    if (numbers.length < 15 && numbers.length % 7 === 0) {
+      return 7;
+    }
+
     return null;
   }
 
-  // const checkCountry = ({ number }) => {
-  //   if (number === '7' || number === '8') {
-  //     return true;
-  //   }
-  //
-  //   return false;
-  // }
-  //
-  // const checkOperator = ({ number }) => {
-  //   if (number.length !== 3) {
-  //     return false;
-  //   }
-  //
-  //   if (codeOperator.indexOf(number) === -1) {
-  //     return false;
-  //   }
-  //
-  //   return true;
-  // }
+  const checkCountry = ({ number }) => {
+    if (number === '7' || number === '8') {
+      return true;
+    }
+
+    return false;
+  }
+
+  const checkOperator = ({ number }) => {
+    if (number.length !== 3) {
+      return false;
+    }
+
+    if (codeOperator.indexOf(number) === -1) {
+      return false;
+    }
+
+    return true;
+  }
 
 
-  // const checkPhone = ({ phone, format }) => {
-  //   if (format === 11) {
-  //     const firstNumber = phone.slice(0, 1);
-  //     if (firstNumber === '8') {
-  //       phone = 7 + phone.slice(1);
-  //     }
-      // if (!checkCountry({ number: phone.slice(0, 1) })) {
-      //   return false;
-      // }
-      // phone = phone.slice(1);
-    // }
+  const checkPhone = ({ phone, format }) => {
+    if (format === 11) {
+      if (!checkCountry({ number: phone.slice(0, 1) })) {
+        return false;
+      }
+      phone = phone.slice(1);
+    }
 
-    // if (!checkOperator({ number: phone.slice(0, 3) })) {
-    //   return false;
-    // }
+    if (!checkOperator({ number: phone.slice(0, 3) })) {
+      return false;
+    }
 
-  //   return true;
-  // }
+    return true;
+  }
 
 
 
 
   const getPhones = ({ numbers, format }) => {
-    const result = [];
+    let result = [];
     const numberOfPhones = numbers.length / format;
 
     for (let i = 0; i < numberOfPhones; i += 1) {
       let phone = numbers.slice(i * format, format + (i * format));
-      // if (!checkPhone({ phone, format })) {
-      //   return false;
-      //   // continue;
-      // }
 
       if (format === 11) {
         const firstNumber = phone.slice(0, 1);
@@ -89,10 +79,27 @@ module.exports = (phones) => {
           phone = 7 + phone.slice(1);
         }
       }
+
+      if (format === 10 || format === 11) {
+        if (!checkPhone({ phone, format })) {
+          result = null;
+          break;
+        }
+      }
+
       result.push(phone);
     }
 
     return result;
+  }
+
+  if (truePhone) {
+    console.log(`truePhones: ${truePhone}`);
+    const phones = truePhone.match(/[0-9]+/g);
+    if (!phones) {
+      return null;
+    }
+    return phones;
   }
 
 
@@ -110,9 +117,9 @@ module.exports = (phones) => {
 
   const phone = getPhones({ numbers, format });
 
-  if (!phone) {
-    return null;
-  }
+  // if (!phone) {
+  //   return null;
+  // }
 
   return phone;
 };

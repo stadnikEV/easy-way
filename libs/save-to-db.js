@@ -22,7 +22,7 @@ module.exports = (data) => {
       const firstName = name.firstName;
       const lastName = name.lastName;
       const fatherName = name.fatherName;
-      const phone = getPhones(row.phone);
+      const phone = getPhones({ phones: row.phone, truePhone: row.truePhone });
 
       const origin = new Origin({
         _id: new mongoose.Types.ObjectId(),
