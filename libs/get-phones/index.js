@@ -80,6 +80,11 @@ module.exports = ({ phones, truePhone }) => {
         }
       }
 
+      if (!global.isCheckOperator) {
+        result.push(phone);
+        continue;
+      }
+
       if (format === 10 || format === 11) {
         if (!checkPhone({ phone, format })) {
           result = null;
@@ -94,7 +99,6 @@ module.exports = ({ phones, truePhone }) => {
   }
 
   if (truePhone) {
-    console.log(`truePhones: ${truePhone}`);
     const phones = truePhone.match(/[0-9]+/g);
     if (!phones) {
       return null;
@@ -116,10 +120,6 @@ module.exports = ({ phones, truePhone }) => {
   }
 
   const phone = getPhones({ numbers, format });
-
-  // if (!phone) {
-  //   return null;
-  // }
 
   return phone;
 };

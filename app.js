@@ -19,6 +19,7 @@ const removeDirectory = require('./libs/remove-directory');
 const createDirectory = require('./libs/create-directory');
 const checkValidPhones = require('./libs/check-valid-phones');
 const setStartPosition = require('./libs/set-start-position');
+const setCheckOperator = require('./libs/set-check-operator');
 
 
 const app = express();
@@ -38,6 +39,9 @@ dropDatabase()
   })
   .then(() => {
     return setStartPosition();
+  })
+  .then(() => {
+    return setCheckOperator();
   })
   .then((position) => {
     startPosition = position;
