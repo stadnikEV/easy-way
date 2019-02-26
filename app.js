@@ -40,11 +40,11 @@ dropDatabase()
   .then(() => {
     return setStartPosition();
   })
-  .then(() => {
-    return setCheckOperator();
-  })
   .then((position) => {
     startPosition = position;
+    return setCheckOperator();
+  })
+  .then(() => {
     console.log('Чтение XLSX');
     return XlsxToJsonFile({
       input: 'excel/ban.xlsx',
