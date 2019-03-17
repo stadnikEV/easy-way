@@ -12,6 +12,7 @@ module.exports = (data) => {
     bar.start(data.length, 0);
 
     const EmptyEmail = require('../models/empty-email');
+
     const createModel = (row) => {
       let name = getName({
         fio: row.fio,
@@ -43,25 +44,30 @@ module.exports = (data) => {
       });
     };
 
-    // let epmptyCount = 0;
     const result = [];
     const models = [];
 
     data.forEach((row, index) => {
       bar.update(index + 1);
-      const email = getEmail({ email: row.email });
+      let email = getEmail({ email: row.email });
+
+      if (global.isIgnoreEmptyEmail) {
+        email = [];
+      }
+
       if (!email) {
-        // epmptyCount += 1;
         models.push(createModel(row));
         return;
       }
+
       row.email = email;
       result.push(row);
     });
+
     bar.stop();
+
     saveAll({ documents: models, barMessg: 'Сохранение email в базу' })
       .then(() => {
-        // console.log(`Пустые email: ${epmptyCount}`);
         resolve(result);
       })
       .catch((e) => {

@@ -20,6 +20,7 @@ const createDirectory = require('./libs/create-directory');
 const checkValidPhones = require('./libs/check-valid-phones');
 const setStartPosition = require('./libs/set-start-position');
 const setCheckOperator = require('./libs/set-check-operator');
+const setIgnoreEmptyEmail = require('./libs/set-ignore-empty-email');
 
 
 const app = express();
@@ -43,6 +44,9 @@ dropDatabase()
   .then((position) => {
     startPosition = position;
     return setCheckOperator();
+  })
+  .then(() => {
+    return setIgnoreEmptyEmail();
   })
   .then(() => {
     console.log('Чтение XLSX');
