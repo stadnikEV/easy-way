@@ -45,6 +45,7 @@ module.exports = ({ numberOrigin }) => {
             {
               $project: {
                 _id: 0,
+                "id": "$id",
                 "Компания": "$companyName",
                 "ИНН": "$inn",
                 "Адрес": "$address",
@@ -67,6 +68,7 @@ module.exports = ({ numberOrigin }) => {
         numberResult = origin.length;
         return saveToXlsx({
           fields: [
+            "id",
             'Компания',
             'ИНН',
             'Адрес',
