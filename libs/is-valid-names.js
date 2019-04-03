@@ -8,10 +8,12 @@ module.exports = ({ name, validNames }) => {
   let isFatherName = false;
 
   validNames.forEach((item) => {
-    if (item.firstName === name.firstName.toLowerCase()) {
+    const firstName = name.firstName.toLowerCase().replace(/ё/, 'е');
+    const fatherName = name.fatherName.toLowerCase().replace(/ё/, 'е');
+    if (item.firstName === firstName) {
       isFirstName = true;
     }
-    if (item.fatherName === name.fatherName.toLowerCase()) {
+    if (item.fatherName === fatherName) {
       isFatherName = true;
     }
   });
