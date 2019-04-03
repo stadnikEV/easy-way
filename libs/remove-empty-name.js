@@ -1,9 +1,10 @@
 const mongoose = require('../libs/mongoose');
 const saveAll = require('./mongoose-save-all');
+const isValidNames = require('./is-valid-names');
 const _cliProgress = require('cli-progress');
 const getName = require('./get-name');
 
-module.exports = (data) => {
+module.exports = ({ data, validNames }) => {
   const promise = new Promise((resolve, reject) => {
     const bar = new _cliProgress.Bar({
       format: 'Поиск пустых ФИО [{bar}]'
@@ -35,12 +36,14 @@ module.exports = (data) => {
     data.forEach((row, index) => {
       bar.update(index + 1);
 
-      const name = getName({
+      let name = getName({
         fio: row.fio,
         lastName: row.lastName,
         firstName: row.firstName,
         fatherName: row.fatherName,
       });
+
+      name = isValidNames({ name, validNames });
 
       if (!name) {
         models.push(createModel(row));

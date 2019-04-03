@@ -29,6 +29,7 @@ console.log('\033[2J');
 
 let numberOrigin = 0;
 let ban = null;
+let validNames = null;
 let startPosition = 0;
 
 dropDatabase()
@@ -50,6 +51,16 @@ dropDatabase()
   })
   .then(() => {
     console.log('Чтение XLSX');
+    return XlsxToJsonFile({
+      input: 'excel/valid-names.xlsx',
+      output: 'excel/valid-names.json',
+    })
+  })
+  .then(() => {
+    return jsonFileToObject({ path: 'excel/valid-names.json' });
+  })
+  .then((data) => {
+    validNames = data;
     return XlsxToJsonFile({
       input: 'excel/ban.xlsx',
       output: 'excel/ban.json',
@@ -80,7 +91,7 @@ dropDatabase()
     return removeEmptyEmail(data);
   })
   .then((data) => {
-    return removeEmptyName(data);
+    return removeEmptyName({ data, validNames });
   })
   .then((data) => {
     return saveToDB(data);
