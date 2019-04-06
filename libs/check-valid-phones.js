@@ -1,4 +1,5 @@
 const getPhones = require('./get-phones');
+const saveToTxt = require('./save-to-txt');
 
 module.exports = ({ data, fileName }) => {
   const promise = new Promise((resolve, reject) => {
@@ -16,13 +17,22 @@ module.exports = ({ data, fileName }) => {
       notValidId.push(company);
     });
 
+    notValidPhones = '';
+
     if (notValidId.length !== 0) {
       notValidId.forEach((item) => {
         console.log(`ID: ${item.id}
 ФИО: ${item.fio}
 phone: ${item.phone}
 `);
+      notValidPhones += `ID: ${item.id}
+ФИО: ${item.fio}
+phone: ${item.phone}
+
+`;
+      saveToTxt({ path: 'not-valid-phones.txt', text: notValidPhones });
       });
+      console.log(`Количество не валидных номеров: ${notValidId.length}`);
       reject(`В файле ${fileName} Найдены телефоны в разных форматах`);
       return;
     }
