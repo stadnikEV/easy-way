@@ -20,6 +20,7 @@ const createDirectory = require('./libs/create-directory');
 const checkValidPhones = require('./libs/check-valid-phones');
 const setStartPosition = require('./libs/set-start-position');
 const setIgnoreEmptyEmail = require('./libs/set-ignore-empty-email');
+const removeIgnorePhones = require('./libs/remove-ignore-phones');
 
 
 const app = express();
@@ -29,6 +30,7 @@ console.log('\033[2J');
 let numberOrigin = 0;
 let ban = null;
 let validNames = null;
+let ignorePhones = null;
 let startPosition = 0;
 
 dropDatabase()
@@ -40,6 +42,9 @@ dropDatabase()
   })
   .then(() => {
     return removeDirectory({ path: './excel/ignore-words.json' });
+  })
+  .then(() => {
+    return removeDirectory({ path: './excel/ignore-phones.json' });
   })
   .then(() => {
     return removeDirectory({ path: './excel/origin.json' });
@@ -70,6 +75,16 @@ dropDatabase()
   .then((data) => {
     validNames = data;
     return XlsxToJsonFile({
+      input: 'excel/ignore-phones.xlsx',
+      output: 'excel/ignore-phones.json',
+    })
+  })
+  .then(() => {
+    return jsonFileToObject({ path: 'excel/ignore-phones.json' });
+  })
+  .then((data) => {
+    ignorePhones = data;
+    return XlsxToJsonFile({
       input: 'excel/ban.xlsx',
       output: 'excel/ban.json',
     })
@@ -93,6 +108,7 @@ dropDatabase()
   })
   .then((data) => {
     data = addId(data);
+    data = removeIgnorePhones({ data, ignorePhones });
     return checkValidPhones({data, fileName: 'Origin'});
   })
   .then((data) => {
@@ -137,6 +153,9 @@ dropDatabase()
   })
   .then(() => {
     return removeDirectory({ path: './excel/valid-names.json' });
+  })
+  .then(() => {
+    return removeDirectory({ path: './excel/ignore-phones.json' });
   })
   .then(() => {
     mongoose.disconnect();
