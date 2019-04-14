@@ -333,7 +333,7 @@ module.exports = ({ numberOrigin }) => {
       })
       .then((institutions) => {
         bar.update(14);
-        if (Institutions.length === 0) {
+        if (institutions.length === 0) {
           return;
         }
         numberInstitutions = institutions.length;

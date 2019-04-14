@@ -17,7 +17,7 @@ module.exports = ({ phones, truePhone }) => {
     if (numbers.length % 11 === 0) {
       return 11;
     }
-    if (numbers.length < 19 && numbers.length % 6 === 0) {
+    if (numbers.length < 18 && numbers.length % 6 === 0) {
       return 6;
     }
     if (numbers.length < 15 && numbers.length % 7 === 0) {
@@ -80,10 +80,10 @@ module.exports = ({ phones, truePhone }) => {
         }
       }
 
-      if (!global.isCheckOperator) {
-        result.push(phone);
-        continue;
-      }
+      // if (!global.isCheckOperator) {
+      //   result.push(phone);
+      //   continue;
+      // }
 
       if (format === 10 || format === 11) {
         if (!checkPhone({ phone, format })) {

@@ -19,7 +19,6 @@ const removeDirectory = require('./libs/remove-directory');
 const createDirectory = require('./libs/create-directory');
 const checkValidPhones = require('./libs/check-valid-phones');
 const setStartPosition = require('./libs/set-start-position');
-const setCheckOperator = require('./libs/set-check-operator');
 const setIgnoreEmptyEmail = require('./libs/set-ignore-empty-email');
 
 
@@ -34,6 +33,18 @@ let startPosition = 0;
 
 dropDatabase()
   .then(() => {
+    return removeDirectory({ path: './excel/ban.json' });
+  })
+  .then(() => {
+    return removeDirectory({ path: './excel/valid-names.json' });
+  })
+  .then(() => {
+    return removeDirectory({ path: './excel/ignore-words.json' });
+  })
+  .then(() => {
+    return removeDirectory({ path: './excel/origin.json' });
+  })
+  .then(() => {
     return removeDirectory({ path: './excel/result' });
   })
   .then(() => {
@@ -44,9 +55,6 @@ dropDatabase()
   })
   .then((position) => {
     startPosition = position;
-    return setCheckOperator();
-  })
-  .then(() => {
     return setIgnoreEmptyEmail();
   })
   .then(() => {
@@ -71,6 +79,7 @@ dropDatabase()
   })
   .then((data) => {
     ban = data;
+    ban = addId(ban);
     return checkValidPhones({data, fileName: 'Ban'});
   })
   .then(() => {
@@ -83,11 +92,11 @@ dropDatabase()
     return jsonFileToObject({ path: 'excel/origin.json', startPosition });
   })
   .then((data) => {
+    data = addId(data);
     return checkValidPhones({data, fileName: 'Origin'});
   })
   .then((data) => {
     numberOrigin = data.length;
-    data = addId(data);
     return removeEmptyEmail(data);
   })
   .then((data) => {
@@ -125,6 +134,9 @@ dropDatabase()
   })
   .then(() => {
     return removeDirectory({ path: './excel/ignore-words.json' });
+  })
+  .then(() => {
+    return removeDirectory({ path: './excel/valid-names.json' });
   })
   .then(() => {
     mongoose.disconnect();

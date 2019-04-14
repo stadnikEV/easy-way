@@ -1,11 +1,12 @@
 const getPhones = require('./get-phones');
-const saveToTxt = require('./save-to-txt');
+const saveNotValidPhones = require('./save-not-valid-phones');
+const setCreateTruePhones = require('./set-create-true-phones');
 
 module.exports = ({ data, fileName }) => {
   const promise = new Promise((resolve, reject) => {
-    const notValidId = [];
+    const notValidCompany = [];
 
-    data.forEach((company, index) => {
+    data.forEach((company) => {
       if (!company.phone) {
         return;
       }
@@ -13,27 +14,34 @@ module.exports = ({ data, fileName }) => {
       if (getPhones({ phones: company.phone, truePhone: company.truePhone })) {
         return
       }
-      company.id = index + 2;
-      notValidId.push(company);
+      notValidCompany.push(company);
     });
 
-    notValidPhones = '';
 
-    if (notValidId.length !== 0) {
-      notValidId.forEach((item) => {
-        console.log(`ID: ${item.id}
-ФИО: ${item.fio}
-phone: ${item.phone}
-`);
-      notValidPhones += `ID: ${item.id}
-ФИО: ${item.fio}
-phone: ${item.phone}
 
-`;
-      saveToTxt({ path: 'not-valid-phones.txt', text: notValidPhones });
-      });
-      console.log(`Количество не валидных номеров: ${notValidId.length}`);
-      reject(`В файле ${fileName} Найдены телефоны в разных форматах`);
+    if (notValidCompany.length !== 0) {
+      saveNotValidPhones({ companies: notValidCompany, path: fileName })
+        .then(() => {
+          console.log(`В файле ${fileName} Найдены телефоны в разных форматах`);
+          return setCreateTruePhones();
+        })
+        .then((answer) => {
+          if (!answer) {
+            return Promise.reject('Вылнение программы остановлено');
+          }
+          notValidCompany.forEach((notValidCompany) => {
+            data.forEach((item) => {
+              if (item.id === notValidCompany.id) {
+                item.truePhone = item.phone;
+              }
+            });
+          });
+          resolve(data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+
       return;
     }
 
