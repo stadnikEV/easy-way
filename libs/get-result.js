@@ -43,6 +43,9 @@ module.exports = ({ numberOrigin }) => {
               $match: { id: { $in: id } },
             },
             {
+              $sort : { id : 1 }
+            },
+            {
               $project: {
                 _id: 0,
                 "id": "$id",
@@ -177,6 +180,9 @@ module.exports = ({ numberOrigin }) => {
         return EmptyEmail
         .aggregate([
           {
+            $sort : { id : 1 }
+          },
+          {
             $project: {
               _id: 0,
               "id": "$id",
@@ -226,6 +232,9 @@ module.exports = ({ numberOrigin }) => {
             $match: { fatherName: { $ne: '' } },
           },
           {
+            $sort : { id : 1 }
+          },
+          {
             $project: {
               _id: 0,
               "id": "$id",
@@ -270,6 +279,9 @@ module.exports = ({ numberOrigin }) => {
         bar.update(11);
         return EmptyName
         .aggregate([
+          {
+            $sort : { id : 1 }
+          },
           {
             $project: {
               _id: 0,
@@ -316,6 +328,9 @@ module.exports = ({ numberOrigin }) => {
         bar.update(13);
         return Institutions
         .aggregate([
+          {
+            $sort : { id : 1 }
+          },
           {
             $project: {
               _id: 0,
