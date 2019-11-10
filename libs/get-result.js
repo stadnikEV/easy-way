@@ -59,11 +59,14 @@ module.exports = ({ numberOrigin }) => {
                 "Отрасль" : "$service",
                 "Почта": "$email",
                 "Телефоны": "$phone",
+                "Выручка": "$earnings",
+                "Стоимость": "$cost",
               },
             }
           ]);
       })
       .then((origin) => {
+        console.log(origin)
         bar.update(2);
         if (origin.length === 0) {
           return;
@@ -82,6 +85,8 @@ module.exports = ({ numberOrigin }) => {
             'Отрасль',
             'Почта',
             'Телефоны',
+            'Выручка',
+            'Стоимость',
           ],
           data: origin,
           path: 'excel/result/Результат.xlsx',
@@ -101,6 +106,8 @@ module.exports = ({ numberOrigin }) => {
               "ФИО": "$fio",
               "Почта": "$email",
               "Телефоны": "$phone",
+              "Выручка": "$earnings",
+              "Стоимость": "$cost",
             },
           }
         ]);
@@ -126,6 +133,8 @@ module.exports = ({ numberOrigin }) => {
             'ФИО',
             'Почта',
             'Телефоны',
+            'Выручка',
+            'Стоимость',
           ],
           data: duplicates,
           path: 'excel/result/Дубликаты.xlsx',
@@ -145,6 +154,8 @@ module.exports = ({ numberOrigin }) => {
               "ФИО": "$fio",
               "Почта": "$email",
               "Телефоны": "$phone",
+              "Выручка": "$earnings",
+              "Стоимость": "$cost",
             },
           }
         ]);
@@ -170,6 +181,8 @@ module.exports = ({ numberOrigin }) => {
             'ФИО',
             'Почта',
             'Телефоны',
+            'Выручка',
+            'Стоимость',
           ],
           data: ban,
           path: 'excel/result/Бан.xlsx',
@@ -196,6 +209,8 @@ module.exports = ({ numberOrigin }) => {
               "Отрасль" : "$service",
               "Почта": "$email",
               "Телефоны": "$phone",
+              "Выручка": "$earnings",
+              "Стоимость": "$cost",
             },
           }
         ]);
@@ -219,6 +234,8 @@ module.exports = ({ numberOrigin }) => {
             'Отрасль',
             'Почта',
             'Телефоны',
+            'Выручка',
+            'Стоимость',
           ],
           data: emptyEmail,
           path: 'excel/result/Пустые_email.xlsx',
@@ -248,6 +265,8 @@ module.exports = ({ numberOrigin }) => {
               "Отрасль" : "$service",
               "Почта": "$email",
               "Телефоны": "$phone",
+              "Выручка": "$earnings",
+              "Стоимость": "$cost",
             },
           }
         ]);
@@ -270,6 +289,8 @@ module.exports = ({ numberOrigin }) => {
             'Отрасль',
             'Почта',
             'Телефоны',
+            'Выручка',
+            'Стоимость',
           ],
           data: emptyEmail,
           path: 'excel/result/Пустые_email_имена.xlsx',
@@ -296,6 +317,8 @@ module.exports = ({ numberOrigin }) => {
               "Отрасль" : "$service",
               "Почта": "$email",
               "Телефоны": "$phone",
+              "Выручка": "$earnings",
+              "Стоимость": "$cost",
             },
           }
         ]);
@@ -319,6 +342,8 @@ module.exports = ({ numberOrigin }) => {
             'Отрасль',
             'Почта',
             'Телефоны',
+            'Выручка',
+            'Стоимость',
           ],
           data: emptyName,
           path: 'excel/result/Не_корректные_ФИО.xlsx',
@@ -342,6 +367,8 @@ module.exports = ({ numberOrigin }) => {
               "Отрасль" : "$service",
               "Почта": "$email",
               "Телефоны": "$phone",
+              "Выручка": "$earnings",
+              "Стоимость": "$cost",
             },
           }
         ]);
@@ -362,6 +389,8 @@ module.exports = ({ numberOrigin }) => {
             'Отрасль',
             'Почта',
             'Телефоны',
+            'Выручка',
+            'Стоимость',
           ],
           data: institutions,
           path: 'excel/result/Учреждения.xlsx',

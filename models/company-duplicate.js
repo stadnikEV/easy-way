@@ -16,6 +16,8 @@ const schema = new Schema({
   service: String,
   email: String,
   phone: String,
+  earnings: String,
+  cost: String,
   created: {
     type: Date,
     default: Date.now

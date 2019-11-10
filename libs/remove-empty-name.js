@@ -26,6 +26,8 @@ module.exports = ({ data, validNames }) => {
         service: row.service,
         email: row.email,
         phone: row.phone,
+        earnings: row.earnings,
+        cost: row.cost,
       });
     };
 

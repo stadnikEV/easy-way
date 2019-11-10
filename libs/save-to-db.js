@@ -37,6 +37,8 @@ module.exports = (data) => {
         service: row.service,
         email: row.email.join(' '),
         phone: slicePhones({ phone }),
+        earnings: row.earnings,
+        cost: row.cost,
       });
 
       const company = new Company({
@@ -50,6 +52,8 @@ module.exports = (data) => {
         inn: getNumber({ string: row.inn }),
         email: row.email,
         phone,
+        earnings: row.earnings,
+        cost: row.cost,
       });
 
       documents.push(company);
