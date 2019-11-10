@@ -66,7 +66,6 @@ module.exports = ({ numberOrigin }) => {
           ]);
       })
       .then((origin) => {
-        console.log(origin)
         bar.update(2);
         if (origin.length === 0) {
           return;
