@@ -6,7 +6,7 @@ module.exports = ({ full, part }) => {
   const procent = ((part / full) * 100);
 
   if (procent % parseInt(procent) !== 0) {
-    return procent.toFixed(1)
+    return procent.toFixed(2)
   }
   return procent;
 };
