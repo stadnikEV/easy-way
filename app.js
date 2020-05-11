@@ -21,6 +21,8 @@ const checkValidPhones = require('./libs/check-valid-phones');
 const setStartPosition = require('./libs/set-start-position');
 const setIgnoreEmptyEmail = require('./libs/set-ignore-empty-email');
 const removeIgnorePhones = require('./libs/remove-ignore-phones');
+const getAdditionalFields = require('./libs/get-additional-fields');
+
 
 
 const app = express();
@@ -107,6 +109,7 @@ dropDatabase()
     return jsonFileToObject({ path: 'excel/origin.json', startPosition });
   })
   .then((data) => {
+    getAdditionalFields({ fields: data[0] })
     data = addId(data);
     data = removeIgnorePhones({ data, ignorePhones });
     return checkValidPhones({data, fileName: 'Origin'});

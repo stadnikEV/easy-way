@@ -4,6 +4,19 @@ const saveToXlsx = require('./save-to-xlsx');
 // const saveToXlsx = require('./save-to-xlsx');
 const getProcent = require('./get-procent');
 const _cliProgress = require('cli-progress');
+const getAdditionalFields = require('./get-additional-fields');
+
+
+const getAggregateFields = () => {
+  const additionalFieldsName = getAdditionalFields({})
+  const result = {}
+
+  additionalFieldsName.forEach((item) => {
+    result[item] = `$${item}`
+  })
+
+  return result
+}
 
 
 module.exports = ({ numberOrigin }) => {
@@ -59,8 +72,7 @@ module.exports = ({ numberOrigin }) => {
                 "Отрасль" : "$service",
                 "Почта": "$email",
                 "Телефоны": "$phone",
-                "Выручка": "$earnings",
-                "Стоимость": "$cost",
+                ...getAggregateFields()
               },
             }
           ]);
@@ -84,8 +96,7 @@ module.exports = ({ numberOrigin }) => {
             'Отрасль',
             'Почта',
             'Телефоны',
-            'Выручка',
-            'Стоимость',
+            ...getAdditionalFields({})
           ],
           data: origin,
           path: 'excel/result/Результат.xlsx',
@@ -99,14 +110,14 @@ module.exports = ({ numberOrigin }) => {
             $project: {
               _id: 0,
               "id": "$id",
-              "inn": "$inn",
+              "ИНН": "$inn",
               "Компания": "$companyName",
               "Адрес": "$address",
               "ФИО": "$fio",
               "Почта": "$email",
               "Телефоны": "$phone",
-              "Выручка": "$earnings",
-              "Стоимость": "$cost",
+              "Отрасль" : "$service",
+              ...getAggregateFields(),
             },
           }
         ]);
@@ -126,14 +137,14 @@ module.exports = ({ numberOrigin }) => {
         return saveToXlsx({
           fields: [
             "id",
-            'inn',
+            'ИНН',
             'Компания',
             'Адрес',
             'ФИО',
             'Почта',
             'Телефоны',
-            'Выручка',
-            'Стоимость',
+            'Отрасль',
+            ...getAdditionalFields({})
           ],
           data: duplicates,
           path: 'excel/result/Дубликаты.xlsx',
@@ -147,14 +158,14 @@ module.exports = ({ numberOrigin }) => {
             $project: {
               _id: 0,
               "id": "$id",
-              "inn": "$inn",
+              "ИНН": "$inn",
               "Компания": "$companyName",
               "Адрес": "$address",
               "ФИО": "$fio",
               "Почта": "$email",
               "Телефоны": "$phone",
-              "Выручка": "$earnings",
-              "Стоимость": "$cost",
+              "Отрасль": "$service",
+              ...getAggregateFields(),
             },
           }
         ]);
@@ -174,14 +185,14 @@ module.exports = ({ numberOrigin }) => {
         return saveToXlsx({
           fields: [
             'id',
-            'inn',
+            'ИНН',
             'Компания',
             'Адрес',
             'ФИО',
             'Почта',
             'Телефоны',
-            'Выручка',
-            'Стоимость',
+            "Отрасль",
+            ...getAdditionalFields({}),
           ],
           data: ban,
           path: 'excel/result/Бан.xlsx',
@@ -208,8 +219,7 @@ module.exports = ({ numberOrigin }) => {
               "Отрасль" : "$service",
               "Почта": "$email",
               "Телефоны": "$phone",
-              "Выручка": "$earnings",
-              "Стоимость": "$cost",
+              ...getAggregateFields(),
             },
           }
         ]);
@@ -233,8 +243,7 @@ module.exports = ({ numberOrigin }) => {
             'Отрасль',
             'Почта',
             'Телефоны',
-            'Выручка',
-            'Стоимость',
+            ...getAdditionalFields({})
           ],
           data: emptyEmail,
           path: 'excel/result/Пустые_email.xlsx',
@@ -254,18 +263,17 @@ module.exports = ({ numberOrigin }) => {
             $project: {
               _id: 0,
               "id": "$id",
-              "Компания": "$companyName",
-              "ИНН": "$inn",
-              "Адрес": "$address",
-              "ФИО": "$fio",
-              "Фамилия": "$lastName",
-              "Имя": "$firstName",
-              "Отчество": "$fatherName",
-              "Отрасль" : "$service",
-              "Почта": "$email",
-              "Телефоны": "$phone",
-              "Выручка": "$earnings",
-              "Стоимость": "$cost",
+              "companyName": "$companyName",
+              "inn": "$inn",
+              "address": "$address",
+              "fio": "$fio",
+              "lastName": "$lastName",
+              "firstName": "$firstName",
+              "fatherName": "$fatherName",
+              "service" : "$service",
+              "email": "$email",
+              "phone": "$phone",
+              ...getAggregateFields(),
             },
           }
         ]);
@@ -278,18 +286,17 @@ module.exports = ({ numberOrigin }) => {
         return saveToXlsx({
           fields: [
             "id",
-            'Компания',
-            'ИНН',
-            'Адрес',
-            'ФИО',
-            "Фамилия",
-            "Имя",
-            "Отчество",
-            'Отрасль',
-            'Почта',
-            'Телефоны',
-            'Выручка',
-            'Стоимость',
+            'companyName',
+            'inn',
+            'address',
+            'fio',
+            "lastName",
+            "firstName",
+            "fatherName",
+            'service',
+            'email',
+            'phone',
+            ...getAdditionalFields({})
           ],
           data: emptyEmail,
           path: 'excel/result/Пустые_email_имена.xlsx',
@@ -316,8 +323,7 @@ module.exports = ({ numberOrigin }) => {
               "Отрасль" : "$service",
               "Почта": "$email",
               "Телефоны": "$phone",
-              "Выручка": "$earnings",
-              "Стоимость": "$cost",
+              ...getAggregateFields(),
             },
           }
         ]);
@@ -341,8 +347,7 @@ module.exports = ({ numberOrigin }) => {
             'Отрасль',
             'Почта',
             'Телефоны',
-            'Выручка',
-            'Стоимость',
+            ...getAdditionalFields({})
           ],
           data: emptyName,
           path: 'excel/result/Не_корректные_ФИО.xlsx',
@@ -366,8 +371,7 @@ module.exports = ({ numberOrigin }) => {
               "Отрасль" : "$service",
               "Почта": "$email",
               "Телефоны": "$phone",
-              "Выручка": "$earnings",
-              "Стоимость": "$cost",
+              ...getAggregateFields(),
             },
           }
         ]);
@@ -388,8 +392,7 @@ module.exports = ({ numberOrigin }) => {
             'Отрасль',
             'Почта',
             'Телефоны',
-            'Выручка',
-            'Стоимость',
+            ...getAdditionalFields({})
           ],
           data: institutions,
           path: 'excel/result/Учреждения.xlsx',

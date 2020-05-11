@@ -30,8 +30,6 @@ const schema = new Schema({
   fio: [
     String,
   ],
-  earnings: String,
-  cost: String,
   created: {
     type: Date,
     default: Date.now

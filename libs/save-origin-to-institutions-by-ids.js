@@ -1,5 +1,6 @@
 const saveAll = require('./mongoose-save-all');
 const mongoose = require('../libs/mongoose');
+const getAdditionalFields = require('./get-additional-fields');
 
 module.exports = ({ ids }) => {
   const promise = new Promise((resolve, reject) => {
@@ -29,6 +30,7 @@ module.exports = ({ ids }) => {
             service: item.service,
             email: item.email,
             phone: item.phone,
+            ...getAdditionalFields({ row: item }),
           });
 
           documents.push(institutions);

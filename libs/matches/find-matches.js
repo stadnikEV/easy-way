@@ -4,6 +4,7 @@ const stringToArray = require('./string-to-array')
 const findInn = require('./find-inn')
 const findCompany = require('./find-company')
 const getProcent = require('../get-procent')
+const getAdditionalFields = require('../get-additional-fields')
 
 
 module.exports = (data) => {
@@ -14,6 +15,8 @@ module.exports = (data) => {
     const innMatch = []
     const companyMatch = []
 
+    getAdditionalFields({ fields: data[0] })
+
     const find = async () => {
       if (data.length === 0) {
         resolve({
@@ -21,6 +24,7 @@ module.exports = (data) => {
           emailMatch,
           innMatch,
           companyMatch,
+          resultSite: result.filter((item) => item.site !== ''),
         })
         return
       }

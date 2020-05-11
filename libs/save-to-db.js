@@ -5,6 +5,7 @@ const getPhones = require('./get-phones');
 const getName = require('./get-name');
 const getNumber = require('./get-number');
 const slicePhones = require('./slice-phones');
+const getAdditionalFields = require('./get-additional-fields');
 
 module.exports = (data) => {
   const promise = new Promise((resolve, reject) => {
@@ -37,8 +38,7 @@ module.exports = (data) => {
         service: row.service,
         email: row.email.join(' '),
         phone: slicePhones({ phone }),
-        earnings: row.earnings,
-        cost: row.cost,
+        ...getAdditionalFields({ row }),
       });
 
       const company = new Company({
@@ -52,8 +52,6 @@ module.exports = (data) => {
         inn: getNumber({ string: row.inn }),
         email: row.email,
         phone,
-        earnings: row.earnings,
-        cost: row.cost,
       });
 
       documents.push(company);

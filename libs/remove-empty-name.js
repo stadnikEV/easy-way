@@ -3,6 +3,7 @@ const saveAll = require('./mongoose-save-all');
 const isValidNames = require('./is-valid-names');
 const _cliProgress = require('cli-progress');
 const getName = require('./get-name');
+const getAdditionalFields = require('./get-additional-fields');
 
 module.exports = ({ data, validNames }) => {
   const promise = new Promise((resolve, reject) => {
@@ -26,8 +27,7 @@ module.exports = ({ data, validNames }) => {
         service: row.service,
         email: row.email,
         phone: row.phone,
-        earnings: row.earnings,
-        cost: row.cost,
+        ...getAdditionalFields({ row }),
       });
     };
 
@@ -45,16 +45,17 @@ module.exports = ({ data, validNames }) => {
         fatherName: row.fatherName,
       });
 
-      name = isValidNames({ name, validNames });
+      validName = isValidNames({ name, validNames });
 
-      if (!name) {
-        models.push(createModel(row));
+      if (!validName) {
+        models.push(createModel({ ...row, ...name }));
         return;
       }
 
       result.push(row);
     });
     bar.stop();
+
     saveAll({ documents: models, barMessg: 'Сохранение ФИО в базу' })
       .then(() => {
         // console.log(`Пустые ФИО:: ${epmptyCount}`);

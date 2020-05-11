@@ -1,6 +1,7 @@
 const saveAll = require('./mongoose-save-all');
 const mongoose = require('../libs/mongoose');
 const _cliProgress = require('cli-progress');
+const getAdditionalFields = require('./get-additional-fields');
 
 module.exports = ({ ids }) => {
   const promise = new Promise((resolve, reject) => {
@@ -38,6 +39,7 @@ module.exports = ({ ids }) => {
               email: doc.email,
               phone: doc.phone,
               group,
+              ...getAdditionalFields({ row: doc }),
             }));
           });
           duplicateDoc.push(new CompanyDuplicate({

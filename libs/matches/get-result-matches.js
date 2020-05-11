@@ -1,5 +1,6 @@
 const saveToXlsx = require('../save-to-xlsx')
 const getProcent = require('../get-procent')
+const getAdditionalFields = require('../get-additional-fields')
 
 module.exports = (data, dataLength) => {
   console.log('\033[2J')
@@ -17,14 +18,20 @@ module.exports = (data, dataLength) => {
     'Отрасль',
     'Почта',
     'Телефоны',
-    'Выручка',
-    'Стоимость',
+    ...getAdditionalFields({}),
   ]
 
   saveToXlsx({
     fields,
     data: data.result,
     path: 'excel/result-match/Результат.xlsx',
+  })
+  .then(() => {
+    return saveToXlsx({
+      fields,
+      data: data.resultSite,
+      path: 'excel/result-match/Результат_сайт.xlsx',
+    })
   })
   .then(() => {
     return saveToXlsx({

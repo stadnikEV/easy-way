@@ -3,6 +3,7 @@ const mongoose = require('../libs/mongoose');
 const saveAll = require('./mongoose-save-all');
 const _cliProgress = require('cli-progress');
 const getName = require('./get-name');
+const getAdditionalFields = require('./get-additional-fields');
 
 module.exports = (data) => {
   const promise = new Promise((resolve, reject) => {
@@ -28,6 +29,7 @@ module.exports = (data) => {
         name.fatherName = '';
       }
 
+
       return new EmptyEmail({
         _id: new mongoose.Types.ObjectId(),
         id: row.id,
@@ -41,8 +43,7 @@ module.exports = (data) => {
         service: row.service,
         email: row.email,
         phone: row.phone,
-        earnings: row.earnings,
-        cost: row.cost,
+        ...getAdditionalFields({ row }),
       });
     };
 

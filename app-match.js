@@ -25,6 +25,9 @@ removeDirectory({ path: './excel/result-match/origin.json' })
   .then((result) => {
     getResultMatches(result, dataLength)
   })
+  .then(() => {
+    return removeDirectory({ path: './excel/result-match/origin.json' });
+  })
   .catch((e) => {
     console.log(e)
   })

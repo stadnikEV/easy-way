@@ -19,13 +19,11 @@ const schema = new Schema({
   email: String,
   phone: String,
   group: Number,
-  earnings: String,
-  cost: String,
   created: {
     type: Date,
     default: Date.now
   },
-});
+}, { strict: false });
 
 const Ban = mongoose.model('Ban', schema);
 
