@@ -16,6 +16,7 @@ const schema = new Schema({
   service: String,
   email: String,
   phone: String,
+  originDuplicate: String,
   created: {
     type: Date,
     default: Date.now

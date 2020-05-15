@@ -50,16 +50,16 @@ module.exports = (data) => {
         return
       }
 
-      const companyFound = await findCompany({
-        fio: stringToArray(company.ФИО.toLowerCase()),
-        company: stringToArray(company.Компания.toLowerCase()),
-      })
-
-      if (companyFound) {
-        companyMatch.push(company)
-        find().catch((e) => reject(e))
-        return
-      }
+      // const companyFound = await findCompany({
+      //   fio: stringToArray(company.ФИО.toLowerCase()),
+      //   company: stringToArray(company.Компания.toLowerCase()),
+      // })
+      //
+      // if (companyFound) {
+      //   companyMatch.push(company)
+      //   find().catch((e) => reject(e))
+      //   return
+      // }
 
       result.push(company)
 

@@ -21,12 +21,16 @@ module.exports = ({ ids }) => {
     }
 
     const save = () => {
-      const id = ids.pop();
+      const duplicateId = ids.pop();
       bar.update(barTotal - ids.length);
+
+      const id = duplicateId.map((item) => item.duplicate)
+
       Origin.find({ id })
         .then((documents) => {
           const group = documents[documents.length - 1].id;
           const duplicateDoc = [];
+
           documents.forEach((doc) => {
             duplicateDoc.push(new CompanyDuplicate({
               _id: new mongoose.Types.ObjectId(),
@@ -38,10 +42,12 @@ module.exports = ({ ids }) => {
               service: doc.service,
               email: doc.email,
               phone: doc.phone,
+              originDuplicate: duplicateId[0].origin,
               group,
               ...getAdditionalFields({ row: doc }),
             }));
           });
+
           duplicateDoc.push(new CompanyDuplicate({
             _id: new mongoose.Types.ObjectId(),
             id: '',

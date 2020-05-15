@@ -12,12 +12,14 @@ module.exports = ({ companies, path }) => {
       console.log(`
 ID: ${item.id}
   ФИО: ${fio}
-  phone: ${item.phone}
+  phone:
+${item.phone}
   `);
     notValidPhones += `
 ID: ${item.id}
   ФИО: ${fio}
-  phone: ${item.phone}
+  phone:
+${item.phone}
 
   `;
     });

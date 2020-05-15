@@ -33,7 +33,6 @@ module.exports = () => {
               }
 
               // duplicateCompany += duplicateId.length;
-
               // duplicateId.push(id);
               resultIds.push(duplicateId);
 
@@ -42,7 +41,7 @@ module.exports = () => {
                 const itemId = ids[i].id;
                 for (let j = 0; j < duplicateId.length; j = j + 1) {
                   const dup = duplicateId[j];
-                  if (itemId === dup) {
+                  if (itemId === dup.duplicate) {
 
                     ids.splice(i, 1);
                     i = i - 1;

@@ -2,6 +2,7 @@ let additionalFieldsName = null
 
 module.exports = ({ fields, row }) => {
   const determinedFields = [
+    'id',
     'companyName',
     'inn',
     'address',
@@ -12,6 +13,17 @@ module.exports = ({ fields, row }) => {
     'service',
     'email',
     'phone',
+    'Компания',
+    'ИНН',
+    'Адрес',
+    'ФИО',
+    'Фамилия',
+    'Имя',
+    'Отчество',
+    'Отрасль',
+    'Почта',
+    'Телефоны',
+    'OriginDuplicate',
   ]
 
   if (!additionalFieldsName) {

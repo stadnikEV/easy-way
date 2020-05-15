@@ -12,6 +12,7 @@ const getAggregateFields = () => {
   const result = {}
 
   additionalFieldsName.forEach((item) => {
+    if (!item) return
     result[item] = `$${item}`
   })
 
@@ -116,7 +117,8 @@ module.exports = ({ numberOrigin }) => {
               "ФИО": "$fio",
               "Почта": "$email",
               "Телефоны": "$phone",
-              "Отрасль" : "$service",
+              "Отрасль": "$service",
+              "OriginDuplicate": "$originDuplicate",
               ...getAggregateFields(),
             },
           }
@@ -144,6 +146,7 @@ module.exports = ({ numberOrigin }) => {
             'Почта',
             'Телефоны',
             'Отрасль',
+            'OriginDuplicate',
             ...getAdditionalFields({})
           ],
           data: duplicates,

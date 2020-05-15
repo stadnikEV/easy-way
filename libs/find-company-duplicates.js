@@ -34,7 +34,10 @@ module.exports = (id) => {
         };
         documents.forEach((item) => {
           result.duplicate_id.push(item._id);
-          result.duplicateId.push(item.id);
+          result.duplicateId.push({
+            duplicate: item.id,
+            origin: id,
+          });
         });
 
         resolve(result);
