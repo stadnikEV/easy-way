@@ -3,20 +3,24 @@ const jsonFileToObject = require('./libs/json-file-to-object')
 const findMatches = require('./libs/matches/find-matches')
 const getResultMatches = require('./libs/matches/get-result-matches')
 const removeDirectory = require('./libs/remove-directory')
+const createDirectory = require('./libs/create-directory')
 
 let dataLength = null
 
 console.log('чтение xlsx')
 
-removeDirectory({ path: './excel/result-match/origin.json' })
+removeDirectory({ path: '../result-filter-bitrix' })
+  .then(() => {
+    return createDirectory({ path: '../result-filter-bitrix' })
+  })
   .then(() => {
     return XlsxToJsonFile({
-      input: 'excel/result/Результат.xlsx',
-      output: 'excel/result-match/origin.json',
+      input: '../result-duplicate/Результат.xlsx',
+      output: '../result-filter-bitrix/origin.json',
     })
   })
   .then(() => {
-    return jsonFileToObject({ path: 'excel/result-match/origin.json' })
+    return jsonFileToObject({ path: '../result-filter-bitrix/origin.json' })
   })
   .then((data) => {
     dataLength = data.length
@@ -26,7 +30,7 @@ removeDirectory({ path: './excel/result-match/origin.json' })
     getResultMatches(result, dataLength)
   })
   .then(() => {
-    return removeDirectory({ path: './excel/result-match/origin.json' });
+    return removeDirectory({ path: '../result-filter-bitrix/origin.json' });
   })
   .catch((e) => {
     console.log(e)

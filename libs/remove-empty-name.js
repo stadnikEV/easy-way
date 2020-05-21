@@ -20,7 +20,7 @@ module.exports = ({ data, validNames }) => {
         companyName: row.companyName,
         inn: row.inn,
         address: row.address,
-        fio: `${row.lastName} ${row.firstName} ${row.fatherName}`,
+        fio: row.fio,
         firstName: row.firstName,
         lastName: row.lastName,
         fatherName: row.fatherName,
@@ -45,10 +45,15 @@ module.exports = ({ data, validNames }) => {
         fatherName: row.fatherName,
       });
 
+
       validName = isValidNames({ name, validNames });
 
       if (!validName) {
-        models.push(createModel({ ...row, ...name }));
+        models.push(createModel({ ...row,
+          fio: row.fio,
+          lastName: row.lastName || '',
+          firstName: row.firstName || '',
+          fatherName: row.fatherName || '' }));
         return;
       }
 

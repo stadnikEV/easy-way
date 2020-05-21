@@ -11,7 +11,11 @@ module.exports = ({ data, fileName }) => {
         return;
       }
 
-      if (getPhones({ phones: company.phone, truePhone: company.truePhone })) {
+      if (getPhones({
+        phones: company.phone,
+        truePhone: company.truePhone,
+        ignoredPhone: company.ignoredPhone,
+      })) {
         return
       }
       notValidCompany.push(company);
@@ -22,7 +26,7 @@ module.exports = ({ data, fileName }) => {
     if (notValidCompany.length !== 0) {
       saveNotValidPhones({ companies: notValidCompany, path: fileName })
         .then(() => {
-          console.log(`В файле ${fileName} Найдены телефоны в разных форматах`);
+          console.log(`В файле ${fileName} Найдены телефоны в разных форматах или код оператора не валидный`);
           return setCreateTruePhones();
         })
         .then((answer) => {
@@ -32,7 +36,8 @@ module.exports = ({ data, fileName }) => {
           notValidCompany.forEach((notValidCompany) => {
             data.forEach((item) => {
               if (item.id === notValidCompany.id) {
-                item.truePhone = item.phone;
+                item.truePhone = item.phone
+                item.ignoredPhone = item.phone
               }
             });
           });

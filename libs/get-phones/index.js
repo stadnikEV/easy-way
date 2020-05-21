@@ -1,6 +1,6 @@
 const codeOperator = require('./code-operator');
 
-module.exports = ({ phones, truePhone }) => {
+module.exports = ({ phones, truePhone, ignoredPhone }) => {
 
   const getNumbers = (phones) => {
     const numbers = phones.match(/[0-9]/g);
@@ -11,7 +11,7 @@ module.exports = ({ phones, truePhone }) => {
   };
 
   const getFormat = (numbers) => {
-    if (numbers.length % 10 === 0) {
+    if (numbers.length % 10 === 0 && numbers.length !== 110) {
       return 10;
     }
     if (numbers.length % 11 === 0) {
@@ -98,8 +98,13 @@ module.exports = ({ phones, truePhone }) => {
     return result;
   }
 
+  if (ignoredPhone) {
+    return [ignoredPhone]
+  }
+
   if (truePhone) {
     const phones = truePhone.match(/[0-9]+/g);
+
     if (!phones) {
       return null;
     }

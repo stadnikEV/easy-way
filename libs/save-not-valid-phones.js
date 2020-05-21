@@ -24,7 +24,7 @@ ${item.phone}
   `;
     });
 
-    saveToTxt({ path: `not-valid-phones-${path}.txt`, text: notValidPhones })
+    saveToTxt({ path: `../result-duplicate/not-valid-phones-${path}.txt`, text: notValidPhones })
       .then(() => {
         console.log(`Количество не валидных номеров: ${companies.length}`);
         resolve();

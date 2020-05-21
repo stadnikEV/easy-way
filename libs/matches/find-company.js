@@ -4,8 +4,8 @@ module.exports = ({ fio, company }) => {
   const Company = require('../../models/company-soma')
 
   return new Promise((resolve, reject) => {
-    const matchCompanyProcent = 60
-    const matchFioProcent = 59
+    const matchCompanyProcent = 100
+    const matchFioProcent = 100
 
     const companyQuery = getMatchReference({ arr: company, fieldName: 'companyName', matchProcent: matchCompanyProcent })
     const fioQuery = getMatchReference({ arr: fio, fieldName: 'fio', matchProcent: matchFioProcent })

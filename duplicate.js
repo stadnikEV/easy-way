@@ -1,5 +1,3 @@
-const express = require('express');
-const http = require('http');
 const mongoose = require('./libs/mongoose');
 const XlsxToJsonFile = require('./libs/xlsx-to-json-file');
 const jsonFileToObject = require('./libs/json-file-to-object');
@@ -24,9 +22,6 @@ const removeIgnorePhones = require('./libs/remove-ignore-phones');
 const getAdditionalFields = require('./libs/get-additional-fields');
 
 
-
-const app = express();
-app.set('port', 8080);
 console.log('\033[2J');
 
 let numberOrigin = 0;
@@ -37,25 +32,25 @@ let startPosition = 0;
 
 dropDatabase()
   .then(() => {
-    return removeDirectory({ path: './excel/ban.json' });
+    return removeDirectory({ path: '../ban.json' });
   })
   .then(() => {
-    return removeDirectory({ path: './excel/valid-names.json' });
+    return removeDirectory({ path: '../valid-names.json' });
   })
   .then(() => {
-    return removeDirectory({ path: './excel/ignore-words.json' });
+    return removeDirectory({ path: '../ignore-words.json' });
   })
   .then(() => {
-    return removeDirectory({ path: './excel/ignore-phones.json' });
+    return removeDirectory({ path: '../ignore-phones.json' });
   })
   .then(() => {
-    return removeDirectory({ path: './excel/origin.json' });
+    return removeDirectory({ path: '../origin.json' });
   })
   .then(() => {
-    return removeDirectory({ path: './excel/result' });
+    return removeDirectory({ path: '../result-duplicate' });
   })
   .then(() => {
-    return createDirectory({ path: './excel/result' });
+    return createDirectory({ path: '../result-duplicate' });
   })
   .then(() => {
     return setStartPosition();
@@ -67,32 +62,32 @@ dropDatabase()
   .then(() => {
     console.log('Чтение XLSX');
     return XlsxToJsonFile({
-      input: 'excel/valid-names.xlsx',
-      output: 'excel/valid-names.json',
+      input: '../valid-names.xlsx',
+      output: '../valid-names.json',
     })
   })
   .then(() => {
-    return jsonFileToObject({ path: 'excel/valid-names.json' });
+    return jsonFileToObject({ path: '../valid-names.json' });
   })
   .then((data) => {
     validNames = data;
     return XlsxToJsonFile({
-      input: 'excel/ignore-phones.xlsx',
-      output: 'excel/ignore-phones.json',
+      input: '../ignore-phones.xlsx',
+      output: '../ignore-phones.json',
     })
   })
   .then(() => {
-    return jsonFileToObject({ path: 'excel/ignore-phones.json' });
+    return jsonFileToObject({ path: '../ignore-phones.json' });
   })
   .then((data) => {
     ignorePhones = data;
     return XlsxToJsonFile({
-      input: 'excel/ban.xlsx',
-      output: 'excel/ban.json',
+      input: '../ban.xlsx',
+      output: '../ban.json',
     })
   })
   .then(() => {
-    return jsonFileToObject({ path: 'excel/ban.json' });
+    return jsonFileToObject({ path: '../ban.json' });
   })
   .then((data) => {
     ban = data;
@@ -101,16 +96,16 @@ dropDatabase()
   })
   .then(() => {
     return XlsxToJsonFile({
-      input: 'excel/origin.xlsx',
-      output: 'excel/origin.json',
+      input: '../origin.xlsx',
+      output: '../origin.json',
     });
   })
   .then(() => {
-    return jsonFileToObject({ path: 'excel/origin.json', startPosition });
+    return jsonFileToObject({ path: '../origin.json', startPosition });
   })
   .then((data) => {
     getAdditionalFields({ fields: data[0] })
-    data = addId(data);
+    data = addId(data, startPosition);
     data = removeIgnorePhones({ data, ignorePhones });
     return checkValidPhones({data, fileName: 'Origin'});
   })
@@ -146,19 +141,19 @@ dropDatabase()
     return getResult({ numberOrigin });
   })
   .then(() => {
-    return removeDirectory({ path: './excel/origin.json' });
+    return removeDirectory({ path: '../origin.json' });
   })
   .then(() => {
-    return removeDirectory({ path: './excel/ban.json' });
+    return removeDirectory({ path: '../ban.json' });
   })
   .then(() => {
-    return removeDirectory({ path: './excel/ignore-words.json' });
+    return removeDirectory({ path: '../ignore-words.json' });
   })
   .then(() => {
-    return removeDirectory({ path: './excel/valid-names.json' });
+    return removeDirectory({ path: '../valid-names.json' });
   })
   .then(() => {
-    return removeDirectory({ path: './excel/ignore-phones.json' });
+    return removeDirectory({ path: '../ignore-phones.json' });
   })
   .then(() => {
     mongoose.disconnect();
@@ -167,6 +162,3 @@ dropDatabase()
     console.log(e);
   })
 
-
-
-http.createServer(app).listen(8080, () => {});

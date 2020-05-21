@@ -6,11 +6,11 @@ module.exports = () => {
     const Company = require('../models/company');
 
     XlsxToJsonFile({
-      input: 'excel/ignore-words.xlsx',
-      output: 'excel/ignore-words.json',
+      input: '../ignore-words.xlsx',
+      output: '../ignore-words.json',
     })
     .then(() => {
-      return jsonFileToObject({ path: 'excel/ignore-words.json' });
+      return jsonFileToObject({ path: '../ignore-words.json' });
     })
     .then((data) => {
       const words = [];

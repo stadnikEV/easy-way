@@ -100,7 +100,7 @@ module.exports = ({ numberOrigin }) => {
             ...getAdditionalFields({})
           ],
           data: origin,
-          path: 'excel/result/Результат.xlsx',
+          path: '../result-duplicate/Результат.xlsx',
         })
       })
       .then(() => {
@@ -150,7 +150,7 @@ module.exports = ({ numberOrigin }) => {
             ...getAdditionalFields({})
           ],
           data: duplicates,
-          path: 'excel/result/Дубликаты.xlsx',
+          path: '../result-duplicate/Дубликаты.xlsx',
         })
       })
       .then(() => {
@@ -198,7 +198,7 @@ module.exports = ({ numberOrigin }) => {
             ...getAdditionalFields({}),
           ],
           data: ban,
-          path: 'excel/result/Бан.xlsx',
+          path: '../result-duplicate/Бан.xlsx',
         })
       })
       .then(() => {
@@ -249,7 +249,7 @@ module.exports = ({ numberOrigin }) => {
             ...getAdditionalFields({})
           ],
           data: emptyEmail,
-          path: 'excel/result/Пустые_email.xlsx',
+          path: '../result-duplicate/Пустые_email.xlsx',
         })
       })
       .then(() => {
@@ -302,7 +302,7 @@ module.exports = ({ numberOrigin }) => {
             ...getAdditionalFields({})
           ],
           data: emptyEmail,
-          path: 'excel/result/Пустые_email_имена.xlsx',
+          path: '../result-duplicate/Пустые_email_имена.xlsx',
         })
       })
       .then(() => {
@@ -353,7 +353,7 @@ module.exports = ({ numberOrigin }) => {
             ...getAdditionalFields({})
           ],
           data: emptyName,
-          path: 'excel/result/Не_корректные_ФИО.xlsx',
+          path: '../result-duplicate/Не_корректные_ФИО.xlsx',
         })
       })
       .then(() => {
@@ -398,7 +398,7 @@ module.exports = ({ numberOrigin }) => {
             ...getAdditionalFields({})
           ],
           data: institutions,
-          path: 'excel/result/Учреждения.xlsx',
+          path: '../result-duplicate/Учреждения.xlsx',
         })
       })
       .then(() => {
@@ -424,7 +424,7 @@ module.exports = ({ numberOrigin }) => {
             "Результат",
           ],
           data,
-          path: 'excel/result/Статистика.xlsx',
+          path: '../result-duplicate/Статистика.xlsx',
         })
       })
       .then(() => {

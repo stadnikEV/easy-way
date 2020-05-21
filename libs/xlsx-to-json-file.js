@@ -6,7 +6,9 @@ module.exports = ({ input, output }) => {
       if (err) {
         reject(err);
       } else {
-        resolve(result);
+        setTimeout(() => {
+          resolve(result);
+        }, 500)
       }
     });
   });

@@ -5,7 +5,6 @@ module.exports = (id) => {
 
     Company.findOne({ id }, ['companyName', 'inn', 'lastName', 'firstName', 'fatherName', 'phone', 'email', '-_id'])
       .then((document) => {
-
         return Company.find({ $or: [
           {
             phone: { $in: document.phone },
@@ -26,7 +25,7 @@ module.exports = (id) => {
             firstName: document.firstName,
             fatherName: document.fatherName,
           },
-        ]}, ['id'])})
+        ]}, ['id', 'phone'])})
       .then((documents) => {
         const result = {
           duplicateId: [],
