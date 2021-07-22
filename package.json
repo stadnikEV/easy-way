@@ -28,7 +28,7 @@
     "nconf": "^0.10.0",
     "rimraf": "^2.6.3",
     "winston": "^3.0.0",
-    "xlsx": "^0.14.1",
+    "xlsx": "^0.17.0",
     "xlsx-to-json": "^0.3.0"
   },
   "devDependencies": {
