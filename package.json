@@ -21,7 +21,7 @@
     "cli-progress": "^2.1.1",
     "combinations-generator": "^1.0.1",
     "excel4node": "^1.7.0",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "json2csv": "^4.3.3",
     "mongoose": "^5.1.5",
     "morgan": "^1.9.0",
